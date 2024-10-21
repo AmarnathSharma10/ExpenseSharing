@@ -189,7 +189,14 @@ def equalSplit(expense,participants):
         participant_user = get_object_or_404(User, username=participant)
         profile=get_object_or_404(Profile, user=participant_user)
         expense.participants.add(profile)
-        part_expense=ParticipantExpense.objects.create(expense=expense,profile=profile,amount_owed=contributions[i])
+        part_expense, created = ParticipantExpense.objects.get_or_create(
+            expense=expense,
+            profile=profile,
+            defaults={'amount_owed': contributions[i]}
+        )
+        if not created:
+            part_expense.amount_owed = contributions[i]
+            part_expense.save()
         i+=1
 
 def exactSplit(expense,participants):
@@ -198,7 +205,14 @@ def exactSplit(expense,participants):
             participant_user = get_object_or_404(User, username=participant)
             profile = get_object_or_404(Profile, user=participant_user)
             expense.participants.add(profile)
-            part_expense = ParticipantExpense.objects.create(expense=expense, profile=profile,amount_owed=contribution)
+            part_expense, created = ParticipantExpense.objects.get_or_create(
+                expense=expense,
+                profile=profile,
+                defaults={'amount_owed': contribution}
+            )
+            if not created:
+                part_expense.amount_owed = contribution
+                part_expense.save()
         return True
     return False
 
@@ -209,7 +223,14 @@ def percentSplit(expense,participants):
             participant_user = get_object_or_404(User, username=participant)
             profile = get_object_or_404(Profile, user=participant_user)
             expense.participants.add(profile)
-            part_expense = ParticipantExpense.objects.create(expense=expense, profile=profile,amount_owed=round(contribution*0.01*amount,3))
+            part_expense, created = ParticipantExpense.objects.get_or_create(
+                expense=expense,
+                profile=profile,
+                defaults={'amount_owed':round( contribution*0.01*amount,3)}
+            )
+            if not created:
+                part_expense.amount_owed =round( contribution*0.01*amount,3)
+                part_expense.save()
         return True
     return False
 
