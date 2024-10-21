@@ -80,7 +80,7 @@ def update_expense(request, expense_id: int, expense_data: ExpenseUpdate):
         if isinstance(expense.participants,list):
             participants=[participant.user.username for participant in expense.participants]
         else:
-            participants={participant.user.username: contrib  for participant, contrib in expense.participants.items()} 
+            participants={participant.user.username: contrib  for participant, contrib in expense.participants.items()}
     split=expense.split_method
     if not participants:
         return {"message":"expense edited but no participants"},201
@@ -124,7 +124,7 @@ def retrieve_expenses(request):
 
 
 @login_required
-@api.get("/download-csv")
+@api.get("/download_csv")
 def csv_download(request):
     user = request.user
     profile = get_object_or_404(Profile, user=user)
@@ -142,7 +142,7 @@ def csv_download(request):
 
     return response
 @login_required
-@api.get("/overall-expenses")
+@api.get("/overall_expenses")
 def get_all_expenses(request):
     expenses=Expense.objects.all()
     overall_expenses_list = []

@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from accounts.views import api
 from main.views import api as main_api
+from validation.views import api as valid_api
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/',api.urls),
     path('daily-expenses/',main_api.urls),
+    path('validation/',valid_api.urls)
 
 ]

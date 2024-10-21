@@ -70,10 +70,8 @@ def get_profile(request):
     return Response({"error":"profile not found are u even loggedin?"},status=404)
 @api.get("/profiles")
 def search_profiles(request, username: str):
-    # Search for profiles matching the username (case-insensitive)
     profiles = Profile.objects.filter(user__username__icontains=username)
 
-    # Return profiles or handle the case where none are found
     if not profiles:
         return {"error": "No profiles found for the given username."}, 404
 
